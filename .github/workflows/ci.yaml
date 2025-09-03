@@ -1,0 +1,32 @@
+name: Lint, format, and test code
+
+on:
+    push:
+        branches-ignore: ["main", "staging"]
+        tags-ignore: ["**"]
+
+    workflow_call:
+
+jobs:
+    lint-format:
+        runs-on: self-hosted
+
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Set up node
+            uses: actions/setup-node@v4
+            with:
+                node-version: "latest"
+                cache: "npm"
+
+          - name: Install dependencies
+            run: npm install --save-dev
+            shell: bash
+
+          - name: Check formatting
+            run: npm run fmt-check
+
+          - name: Lint code
+            run: npm run lint

@@ -1,0 +1,10 @@
+.github/
+
+.editorconfig
+.gitignore
+.prettierignore
+.prettierrc
+
+LICENSE
+
+package-lock.json
