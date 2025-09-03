@@ -1,0 +1,76 @@
+name: Build and release new staging images
+
+permissions:
+    packages: write
+    contents: read
+
+on:
+    push:
+        branches: ["staging"]
+        paths-ignore:
+            - ".github/**"
+            - ".vscode/**"
+            - ".editorconfig"
+            - ".env.example"
+            - ".gitignore"
+            - "LICENSE"
+            - "README.md"
+
+    workflow_dispatch:
+
+concurrency:
+    group: deploy-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    ci:
+        uses: ./.github/workflows/ci.yaml
+
+    build-staging:
+        runs-on: self-hosted
+        needs: ci
+        steps:
+            - name: Load docker metadata
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: |
+                      ghcr.io/blokmap/blokmap-staging-authentication
+                  tags: |
+                      type=raw,value={{sha}}
+                      type=raw,value=latest
+
+            - name: Login to GHCR
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Build and push
+              uses: docker/build-push-action@v6
+              with:
+                  file: Dockerfile
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  cache-from: type=registry,ref=ghcr.io/blokmap/blokmap-staging-authentication:buildcache
+                  cache-to: type=registry,ref=ghcr.io/blokmap/blokmap-staging-authentication:buildcache,mode=max
+
+    # deploy-staging:
+    #     runs-on: self-hosted
+    #     needs: [build-staging]
+    #     steps:
+    #         - name: Deploy authentication
+    #           uses: appleboy/ssh-action@v1.2.1
+    #           with:
+    #               host: ${{ secrets.STAGING_HOST }}
+    #               username: ${{ secrets.STAGING_USERNAME }}
+    #               key: ${{ secrets.PRODUCTION_SSH_KEY }}
+    #               debug: true
+    #               script: |
+    #                   set -e
+    #                   docker compose -f /home/blokmap/deploy/production/compose.staging.yaml pull
+    #                   docker compose -f /home/blokmap/deploy/production/compose.staging.yaml up blokmap-staging-authentication
