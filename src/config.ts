@@ -3,9 +3,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 interface Config {
-	port: number;
+	authenticationUrl: string;
+	frontendUrl: string;
 }
 
-const config: Config = { port: Number(process.env["PORT"]) || 3000 };
+const config: Config = {
+	authenticationUrl: process.env["AUTHENTICATION_URL"] as string,
+	frontendUrl: process.env["FRONTEND_URL"] as string,
+};
 
 export default config;

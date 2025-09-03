@@ -1,8 +1,7 @@
 import app from "@/app.js";
-import config from "@/config.js";
 
-const server = app.listen(config.port, () => {
-	console.log(`authentication server is running on port ${config.port}`);
+const server = app.listen(80, () => {
+	console.log("authentication server is running on port 80");
 });
 
 process.once("SIGINT", () => {
