@@ -24,9 +24,9 @@ app.set("trust proxy", 1);
 app.use(express.json());
 app.use(
 	session({
-		name: config.accessCookieName,
-		cookie: config.accessCookieOptions,
-		secret: constants.accessCookieSecret,
+		name: config.claimsCookieName,
+		cookie: config.claimsCookieOptions,
+		secret: constants.claimsCookieSecret,
 		resave: false,
 		saveUninitialized: false,
 		rolling: true,

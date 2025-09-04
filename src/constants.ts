@@ -4,7 +4,7 @@ const constants = {
 	googleClientId: "",
 	googleClientSecret: "",
 
-	accessCookieSecret: "",
+	claimsCookieSecret: "",
 };
 
 try {
@@ -17,7 +17,7 @@ try {
 	constants.googleClientSecret = googleOIDCParts[1] as string;
 
 	const cookieSecret = fs.readFileSync("/run/secrets/cookie-jar-key", { encoding: "utf-8" });
-	constants.accessCookieSecret = cookieSecret;
+	constants.claimsCookieSecret = cookieSecret;
 } catch (err) {
 	console.error(err);
 	process.exit(1);

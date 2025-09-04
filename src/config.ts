@@ -7,17 +7,17 @@ interface Config {
 	authenticationUrl: string;
 	frontendUrl: string;
 
-	accessCookieName: string;
-	accessCookieOptions: CookieOptions;
+	claimsCookieName: string;
+	claimsCookieOptions: CookieOptions;
 }
 
 const config: Config = {
 	authenticationUrl: process.env["AUTHENTICATION_URL"] as string,
 	frontendUrl: process.env["FRONTEND_URL"] as string,
 
-	accessCookieName: process.env["ACCESS_COOKIE_NAME"] || "blokmap_access_token",
-	accessCookieOptions: {
-		maxAge: parseInt(process.env["ACCESS_COOKIE_LIFETIME_MINUTES"] || "120", 10) * 60 * 1000,
+	claimsCookieName: process.env["CLAIMS_COOKIE_NAME"] || "blokmap_login_claims",
+	claimsCookieOptions: {
+		maxAge: parseInt(process.env["CLAIMS_COOKIE_LIFETIME_MINUTES"] || "120", 10) * 60 * 1000,
 		httpOnly: true,
 		path: "/",
 		secure: true,
