@@ -1,15 +1,23 @@
 import fs from "node:fs";
 
-const constants = { google_client_id: "", google_client_secret: "" };
+const constants = {
+	googleClientId: "",
+	googleClientSecret: "",
+
+	accessCookieSecret: "",
+};
 
 try {
-	const google_oidc_credentials = fs.readFileSync("/run/secrets/google-oidc-credentials", {
+	const googleOIDCCredentials = fs.readFileSync("/run/secrets/google-oidc-credentials", {
 		encoding: "utf-8",
 	});
-	const google_oidc_parts = google_oidc_credentials.split("\n");
+	const googleOIDCParts = googleOIDCCredentials.split("\n");
 
-	constants.google_client_id = google_oidc_parts[0] as string;
-	constants.google_client_secret = google_oidc_parts[1] as string;
+	constants.googleClientId = googleOIDCParts[0] as string;
+	constants.googleClientSecret = googleOIDCParts[1] as string;
+
+	const cookieSecret = fs.readFileSync("/run/secrets/cookie-jar-key", { encoding: "utf-8" });
+	constants.accessCookieSecret = cookieSecret;
 } catch (err) {
 	console.error(err);
 	process.exit(1);

@@ -21,8 +21,8 @@ class GoogleOIDCStrategy extends OpenIDConnectStrategy {
 				authorizationURL: "https://accounts.google.com/o/oauth2/v2/auth",
 				tokenURL: " https://oauth2.googleapis.com/token",
 				userInfoURL: "https://openidconnect.googleapis.com/v1/userinfo",
-				clientID: constants.google_client_id,
-				clientSecret: constants.google_client_secret,
+				clientID: constants.googleClientId,
+				clientSecret: constants.googleClientSecret,
 				callbackURL: urlJoin(config.authenticationUrl, "/sso/google/callback"),
 				scope: ["openid", "email", "profile"],
 			},
@@ -58,9 +58,9 @@ googleSSORouter.get(
 	"/callback",
 	passport.authenticate("google-oidc", { failureMessage: true, failWithError: true }),
 	(req, res) => {
-		console.log(req.user);
+		console.log(`successfull Google SSO authentication - ${JSON.stringify(req.user)}`);
 
-		res.redirect(urlJoin(config.authenticationUrl, "/success"));
+		res.redirect(config.frontendUrl);
 	},
 );
 

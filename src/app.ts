@@ -1,5 +1,6 @@
+import config from "@/config.js";
+import constants from "@/constants.js";
 import googleSSORouter from "@/routes/google.js";
-import cookieParser from "cookie-parser";
 import express from "express";
 import session from "express-session";
 import passport from "passport";
@@ -20,12 +21,12 @@ const app = express();
 
 app.set("trust proxy", 1);
 
-app.use(cookieParser("jemama"));
 app.use(express.json());
 app.use(
 	session({
-		cookie: { secure: true },
-		secret: "jemama",
+		name: config.accessCookieName,
+		cookie: config.accessCookieOptions,
+		secret: constants.accessCookieSecret,
 		resave: false,
 		saveUninitialized: false,
 		rolling: true,
@@ -38,9 +39,5 @@ app.use("/sso/google", googleSSORouter);
 
 // app.use("/cas/ugent", ugentCASRouter);
 // app.use("/cas/hogent", hogentCASRouter);
-
-app.get("/success", (_req, res) => {
-	res.send("success");
-});
 
 export default app;
