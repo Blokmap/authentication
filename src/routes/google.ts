@@ -46,7 +46,7 @@ passport.use(
 			username: profile.username,
 			firstName: profile.name?.givenName,
 			lastName: profile.name?.familyName,
-			avatar_url: profile.photos?.[0]?.value,
+			avatarUrl: profile.photos?.[0]?.value,
 		};
 
 		return cb(null, user);
