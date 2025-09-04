@@ -4,4 +4,5 @@ export interface User {
 	username: string | undefined;
 	firstName: string | undefined;
 	lastName: string | undefined;
+	avatar_url: string | undefined;
 }
