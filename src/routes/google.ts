@@ -61,7 +61,7 @@ googleSSORouter.get(
 	(req, res) => {
 		console.log(`successfull Google SSO authentication - ${JSON.stringify(req.user)}`);
 
-		res.redirect(config.frontendUrl);
+		res.redirect(urlJoin(config.frontendUrl, "/auth/sso"));
 	},
 );
 
