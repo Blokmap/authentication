@@ -1,5 +1,5 @@
-import config from "@/config.js";
-import constants from "@/constants.js";
+import config from "../config.js";
+import constants from "../constants.js";
 import express from "express";
 import passport from "passport";
 import OpenIDConnectStrategy, {

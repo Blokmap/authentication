@@ -1,4 +1,4 @@
-import app from "@/app.js";
+import app from "./app.js";
 
 const server = app.listen(80, () => {
 	console.log("authentication server is running on port 80");
